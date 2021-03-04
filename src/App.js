@@ -6,6 +6,7 @@ const URL = 'http://localhost/tehtavakansio/demo/';
 function App() {
   const [tasks, setTasks] = useState([])
   const [task, setTask] = useState('')
+  const [amount, setAmount] = useState('')
   const [editTask, setEditTask] = useState(null);
   const [editDescription, setEditDescription] = useState('')
 
@@ -135,8 +136,10 @@ function App() {
     <div className="container">
       <h3>todo list</h3>
       <form onSubmit={save}>
-        <label>New Task</label>
-        <input value={task} onChange={e => setTask(e.target.value)}/>
+        <label>New item</label>&nbsp;
+        <input placeholder="type description" value={task} onChange={e => setTask(e.target.value)}/>&nbsp;
+        {/* <label></label> */}
+        <input placeholder="type amount" value={amount} onChange={e => setAmount(e.target.value)}/>
         <button>Save</button>
       </form>
       <ol>
