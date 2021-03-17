@@ -6,9 +6,13 @@ const URL = 'http://localhost/tehtavakansio/demo/';
 function App() {
   const [tasks, setTasks] = useState([])
   const [task, setTask] = useState('')
-  const [amount, setAmount] = useState('')
+  const [task2, setTask2] = useState('')
+  // const [amounts, setAmounts] = useState([])
+  // const [amount, setAmount] = useState('')
   const [editTask, setEditTask] = useState(null);
+  const [editAmount, setEditAmount] = useState(null);
   const [editDescription, setEditDescription] = useState('')
+
 
 
   useEffect(() => {
@@ -41,7 +45,8 @@ function App() {
         'Content-type': 'application/json',
       },
       body: JSON.stringify({
-        description: task
+        description: task,
+        amount: task2
       })
     }) 
     .then(res => {
@@ -53,6 +58,7 @@ function App() {
         if (status === 200) {
           setTasks(tasks => [...tasks,res]);
           setTask('');
+          setTask2('');
         } else {
           alert(res.error)
         }
@@ -92,10 +98,11 @@ function App() {
     )
   }
 
-  function setEditedTask(task) {
-    setEditTask(task);
-    setEditDescription(task?.description);
-  }
+  // function setEditedTask(task) {
+  //   setEditTask(task);
+  //   setEditAmount(task);
+  //   setEditDescription(task?.description);
+  // }
 
 
   function update(e) {
@@ -109,6 +116,7 @@ function App() {
       },
       body: JSON.stringify({
         id: editTask.id,
+        // id: editAmount.id,
         description: editDescription
       })
     }) 
@@ -120,8 +128,10 @@ function App() {
       (res) => {
         if (status === 200) {
           tasks[(tasks.findIndex(task => task.id === editTask.id))].description = editDescription;
+          // amounts[(amounts.findIndex(amount => amount.id === editAmount.id))].description = editDescription;
           setTasks([...tasks]);
           setEditTask(null);
+          // setEditAmount(null);
           setEditDescription('');
         } else {
           alert(res.error)
@@ -134,35 +144,21 @@ function App() {
 
   return (
     <div className="container">
-      <h3>todo list</h3>
+      <h3>Shopping list</h3>
       <form onSubmit={save}>
         <label>New item</label>&nbsp;
         <input placeholder="type description" value={task} onChange={e => setTask(e.target.value)}/>&nbsp;
         {/* <label></label> */}
-        <input placeholder="type amount" value={amount} onChange={e => setAmount(e.target.value)}/>
+        <input placeholder="type amount" value={task2} onChange={e => setTask2(e.target.value)}/>
         <button>Save</button>
       </form>
       <ol>
         {tasks.map(task =>(
           <li key={task.id}>
-            {editTask?.id !== task.id && 
-            task.description
-            }
-            {editTask?.id === task.id &&
-              <form onSubmit={update}>
-                <input value={editDescription} onChange={e => setEditDescription(e.target.value)}></input>
-                <button>Save</button>
-                <button type="button" onClick={() => setEditedTask(null)}>Cancel</button>
-              </form>
-            }
+            {task.description} <span>{task.amount}</span>
             <a className="delete" onClick={() => remove(task.id)} href="#">
               delete
               </a>&nbsp;
-              {editTask === null &&
-                <a className="edit" onClick={() => setEditedTask(task)} href="#">
-                  Edit
-                </a>
-              }
               </li>
           ))}
       </ol>
