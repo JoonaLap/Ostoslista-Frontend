@@ -7,13 +7,6 @@ function App() {
   const [tasks, setTasks] = useState([])
   const [task, setTask] = useState('')
   const [task2, setTask2] = useState('')
-  // const [amounts, setAmounts] = useState([])
-  // const [amount, setAmount] = useState('')
-  const [editTask, setEditTask] = useState(null);
-  const [editAmount, setEditAmount] = useState(null);
-  const [editDescription, setEditDescription] = useState('')
-
-
 
   useEffect(() => {
     let status = 0;
@@ -98,59 +91,15 @@ function App() {
     )
   }
 
-  // function setEditedTask(task) {
-  //   setEditTask(task);
-  //   setEditAmount(task);
-  //   setEditDescription(task?.description);
-  // }
-
-
-  function update(e) {
-    e.preventDefault();
-    let status = 0;
-    fetch(URL + 'update.php', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: editTask.id,
-        // id: editAmount.id,
-        description: editDescription
-      })
-    }) 
-    .then(res => {
-      status = parseInt(res.status);
-      return res.json();
-    })
-    .then(
-      (res) => {
-        if (status === 200) {
-          tasks[(tasks.findIndex(task => task.id === editTask.id))].description = editDescription;
-          // amounts[(amounts.findIndex(amount => amount.id === editAmount.id))].description = editDescription;
-          setTasks([...tasks]);
-          setEditTask(null);
-          // setEditAmount(null);
-          setEditDescription('');
-        } else {
-          alert(res.error)
-        }
-      }, (error) => {
-        alert(error);
-      }
-    )
-  }
-
   return (
     <div className="container">
       <h3>Shopping list</h3>
       <form onSubmit={save}>
-        <label>New item</label>&nbsp;
-        <input placeholder="type description" value={task} onChange={e => setTask(e.target.value)}/>&nbsp;
+        <label>New item</label> <br></br>
+        <input className="col-form-label me-3" placeholder="type description" value={task} onChange={e => setTask(e.target.value)}/>&nbsp;
         {/* <label></label> */}
-        <input placeholder="type amount" value={task2} onChange={e => setTask2(e.target.value)}/>
-        <button>Save</button>
+        <input className="col-form-label" placeholder="type amount" value={task2} onChange={e => setTask2(e.target.value)}/>
+        <button className="btn btn-success ms-2 mb-1">Save</button>
       </form>
       <ol>
         {tasks.map(task =>(
@@ -165,24 +114,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
-
-
-
-
-// return (
-//   <div className="container">
-//     <h3>todo list</h3>
-//     <form onSubmit={save}>
-//       <label>New Task</label>
-//       <input value={task} onChange={e => setTask(e.target.value)}/>
-//       <button>Save</button>
-//     </form>
-//     <ol>
-//       {tasks.map(task =>(
-//         <li key={task.id}>{task.description}<a className="delete" onClick={() => remove(task.id)} href="#">delete</a></li>
-//       ))}
-//     </ol>
-//   </div>
-// );
